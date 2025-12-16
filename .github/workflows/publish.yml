@@ -17,13 +17,6 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - prefix: ''
-            ansible: false
-          - prefix: 'ansible-'
-            ansible: true
     permissions:
       contents: read
       packages: write
@@ -56,9 +49,8 @@ jobs:
             org.opencontainers.image.title=${{ env.DHUB_IMAGE_NAME }}
           flavor: |
             latest=true
-            prefix=${{ matrix.prefix }},onlatest=true
           tags: |
-            type=sha,enable=true,priority=100,prefix=${{ matrix.prefix }}${{ steps.date.outputs.date }}--,suffix=,format=short
+            type=sha,enable=true,priority=100,prefix=${{ steps.date.outputs.date }}--,suffix=,format=short
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
